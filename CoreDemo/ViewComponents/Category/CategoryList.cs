@@ -12,5 +12,6 @@ namespace CoreDemo.ViewComponents.Category
             var values = cm.GetList();
             return View(values);
         }
+
     }
 }
