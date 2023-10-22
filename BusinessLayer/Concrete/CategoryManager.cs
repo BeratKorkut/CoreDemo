@@ -18,6 +18,11 @@ namespace BusinessLayer.Concrete
             _categoryDal = categoryDal;
         }
 
+        public List<Category> GetList()
+        {
+            return _categoryDal.GetListAll();
+        }
+
         public void TAdd(Category t)
         {
             _categoryDal.Insert(t);
@@ -31,11 +36,6 @@ namespace BusinessLayer.Concrete
         public Category TGetByID(int id)
         {
             return _categoryDal.GetByID(id);
-        }
-
-        public List<Category> TGetList()
-        {
-            return _categoryDal.GetListAll();
         }
 
         public void TUpdate(Category t)
