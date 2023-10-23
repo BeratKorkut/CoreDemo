@@ -24,6 +24,12 @@ namespace BusinessLayer.Container
             services.AddScoped<ICommentService, CommentManager>();
             services.AddScoped<ICommentDal, EfCommentRepository>();
 
+			services.AddScoped<IWriterService, WriterManager>();
+			services.AddScoped<IWriterDal, EfWriterRepository>();
+
+            services.AddScoped<INewsLetterService, NewsLetterManager>();
+            services.AddScoped<INewsLetterDal, EfNewsLetterRepository>();
+
 
         }
     }
