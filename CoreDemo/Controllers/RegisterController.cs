@@ -2,6 +2,7 @@
 using BusinessLayer.ValidationRules;
 using EntityLayer.Concrete;
 using FluentValidation.Results;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CoreDemo.Controllers
@@ -14,13 +15,14 @@ namespace CoreDemo.Controllers
 		{
 			_writerService = writerService;
 		}
-
+		[AllowAnonymous]
 		[HttpGet]
         public IActionResult Index()
         {
             return View();
-		}
-		[HttpPost]
+        }
+        [AllowAnonymous]
+        [HttpPost]
 		public IActionResult Index(Writer w)
 		{
 			WriterValidator wv = new WriterValidator();
@@ -30,7 +32,7 @@ namespace CoreDemo.Controllers
                 w.WriterStatus = true;
                 w.WriterAbout = "Deneme Test";
                 _writerService.TAdd(w);
-                return RedirectToAction("Index", "Blog");
+                return RedirectToAction("Index", "Login");
             }
 			else
 			{

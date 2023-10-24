@@ -1,0 +1,84 @@
+﻿@using EntityLayer.Concrete
+@model List<Blog>
+
+@{
+    ViewData["Title"] = "BlogListByWriter";
+    Layout = "~/Views/Shared/_WriterLayout.cshtml";
+    int count = 0;
+}
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<h1>Yazarın Blogları</h1>
+<table class="table table-bordered">
+    <tr>
+        <th>#</th>
+        <th>Blog Başlığı</th>
+        <th>Oluşturma Tarihi</th>
+        <th>Kategori</th>
+        <th>Durum</th>
+        <th>Düzenle</th>
+        <th>Sil</th>
+    </tr>
+    @foreach (var item in Model)
+    {
+        count++;
+        <tr>
+            <th>@count</th>
+            <td>@item.BlogTitle</td>
+            <td>@(((DateTime)item.BlogCreateDate).ToString("dd-MMM-yyyy"))</td>
+            <td>@item.Category.CategoryName</td>
+            <td>
+                @if (item.BlogStatus == true)
+                {
+                    <span class="btn btn-success">Aktif</span>
+                }
+                else
+                {
+                    <span class="btn btn-secondary">Pasif</span>
+                }
+            </td>
+            <td><a href="/Blog/BlogEdit/@item.BlogID" class="btn btn-warning">Düzenle</a></td>
+            <td>
+                <a href="#" class="btn btn-danger" onclick="confirmDelete(@item.BlogID)">Sil</a>
+            </td>
+
+        </tr>
+    }
+</table>
+<a href="/Blog/BlogAdd/" class="btn btn-primary">Yeni Blog Oluştur</a>
+
+<script>
+    function confirmDelete(blogId) {
+        swal({
+            title: "Silmek istediğine emin misin?",
+            text: "Silme işlemi gerçekleşirse yeni blog oluşturmanız gerekecektir!",
+            icon: "warning",
+            buttons: {
+                cancel: "İptal et",
+                confirm: "Sil"
+            },
+            dangerMode: true,
+        }).then((willDelete) => {
+            if (willDelete) {
+                swal({
+                    title: "Tebrikler!",
+                    text: "Blog başarılı bir şekilde silindi!",
+                    icon: "success",
+                    button: "Tamam",
+                }).then(() => {
+                    window.location.href = "/Blog/BlogDelete/" + blogId;
+                });
+                // Eğer kullanıcı "OK" derse, silme işlemini gerçekleştir
+            } else {
+                // Eğer kullanıcı "Cancel" derse, işlemi iptal et
+                swal({
+                    title: "İptal!",
+                    text: "Blog silme işlemi iptal edildi!",
+                    icon: "info",
+                    buttons: {
+                        confirm: "Tamam"
+                    }
+                });
+            }
+        });
+    }
+</script>
