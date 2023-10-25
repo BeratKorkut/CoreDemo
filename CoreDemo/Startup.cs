@@ -28,15 +28,14 @@ namespace CoreDemo
             services.ContainerDependencies();
 
 
-            services.AddMvc(config =>
-            {
-                var policy = new AuthorizationPolicyBuilder()
-                .RequireAuthenticatedUser()
-                .Build();
-                config.Filters.Add(new AuthorizeFilter(policy));
-            });
+            //services.AddMvc(config =>
+            //{
+            //    var policy = new AuthorizationPolicyBuilder()
+            //    .RequireAuthenticatedUser()
+            //    .Build();
+            //    config.Filters.Add(new AuthorizeFilter(policy));
+            //});
 
-            services.AddMvc();
             services.AddAuthentication(
                 CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(x =>
@@ -53,6 +52,7 @@ namespace CoreDemo
                 options.LoginPath = "/Login/Index/";
                 options.SlidingExpiration = true;
             });
+            services.AddMvc();
         }
 
         // Bu method, HTTP istekleri için bir HTTP pipeline'ı yapılandırmak için kullanılır.

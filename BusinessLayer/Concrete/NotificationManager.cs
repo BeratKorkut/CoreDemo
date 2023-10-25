@@ -1,4 +1,5 @@
 ﻿using BusinessLayer.Abstract;
+using DataAccessLayer.Abstract;
 using EntityLayer.Concrete;
 using System;
 using System.Collections.Generic;
@@ -10,36 +11,36 @@ namespace BusinessLayer.Concrete
 {
     public class NotificationManager : INotificationService
     {
-        private readonly INotificationService _notificationService;
+        private readonly INotificationDal _notificationDal;
 
-        public NotificationManager(INotificationService notificationService)
+        public NotificationManager(INotificationDal notificationDal)
         {
-            _notificationService = notificationService;
+            _notificationDal = notificationDal;
         }
 
         public List<Notification> GetList()
         {
-            return _notificationService.GetList();
+            return _notificationDal.GetListAll();
         }
 
         public void TAdd(Notification t)
         {
-            _notificationService.TAdd(t);
+            _notificationDal.Insert(t);
         }
 
         public void TDelete(Notification t)
         {
-            _notificationService.TDelete(t);
+            _notificationDal.Delete(t);
         }
 
         public Notification TGetByID(int id)
         {
-            return _notificationService.TGetByID(id);
+            return _notificationDal.GetByID(id);
         }
 
         public void TUpdate(Notification t)
         {
-            _notificationService.TUpdate(t);
+            _notificationDal.Update(t);
         }
     }
 }

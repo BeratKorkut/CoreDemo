@@ -39,6 +39,9 @@ namespace BusinessLayer.Container
             services.AddScoped<INotificationService, NotificationManager>();
             services.AddScoped<INotificationDal, EfNotificationRepository>();
 
+            services.AddScoped<IMessageService, MessageManager>();
+            services.AddScoped<IMessageDal, EfMessageRepository>();
+
 
         }
     }

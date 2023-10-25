@@ -1,0 +1,30 @@
+﻿@using EntityLayer.Concrete
+@model List<Notification>
+
+
+@{
+    int count = 0;
+}
+
+<table class="table table-striped">
+    <thead class="table-dark">
+        <tr>
+            <th> # </th>
+            <th> Bildirim </th>
+            <th> Bildirim Mesaj </th>
+            <th> Bildirim Tarih </th>
+        </tr>
+    </thead>
+    <tbody >
+        @foreach (var item in Model.OrderByDescending(x=>x.NotificationID))
+        {
+            count++;
+            <tr>
+                <th> @count </th>
+                <td> @item.NotificationType </td>
+                <td> @item.NotificationDetails </td>
+                <td> @(((DateTime)item.NotificationDate).ToString("dd-MMM-yyyy")) </td>
+            </tr>
+        }
+    </tbody>
+</table>
