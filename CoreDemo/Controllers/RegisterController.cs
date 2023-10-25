@@ -1,5 +1,6 @@
 ﻿using BusinessLayer.Abstract;
 using BusinessLayer.ValidationRules;
+using CoreDemo.Models;
 using EntityLayer.Concrete;
 using FluentValidation.Results;
 using Microsoft.AspNetCore.Authorization;
@@ -23,26 +24,35 @@ namespace CoreDemo.Controllers
         }
         [AllowAnonymous]
         [HttpPost]
-		public IActionResult Index(Writer w)
+		public IActionResult Index(Writer w, AddProfileImage p)
 		{
-			WriterValidator wv = new WriterValidator();
-			ValidationResult result = wv.Validate(w);
-			if(result.IsValid)
+            WriterValidator wv = new WriterValidator();
+            ValidationResult result = wv.Validate(w);
+            if (result.IsValid)
             {
+                if (p.WriterImage != null)
+                {
+                    var extension = Path.GetExtension(p.WriterImage.FileName);
+                    var newImageName = Guid.NewGuid() + extension;
+                    var location = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/WriterImageFiles/", newImageName);
+                    var stream = new FileStream(location, FileMode.Create);
+                    p.WriterImage.CopyTo(stream);
+                    w.WriterImage = newImageName;
+                }
                 w.WriterStatus = true;
-                w.WriterAbout = "Deneme Test";
                 _writerService.TAdd(w);
                 return RedirectToAction("Index", "Login");
             }
-			else
-			{
-				foreach (var item in result.Errors)
-				{
-					ModelState.AddModelError(item.PropertyName, item.ErrorMessage);
-				}
-			}
-			return View();
+            else
+            {
+                foreach (var item in result.Errors)
+                {
+                    ModelState.AddModelError(item.PropertyName, item.ErrorMessage);
+                }
+            }
+            return View();
 
-		}
+        }
 	}
 }
+

@@ -23,7 +23,12 @@ namespace BusinessLayer.Concrete
 			return _writerDal.GetListAll();
 		}
 
-		public void TAdd(Writer t)
+        public List<Writer> GetWriterByID(int id)
+        {
+			return _writerDal.GetListAll(x=>x.WriterID == id);
+        }
+
+        public void TAdd(Writer t)
 		{
 			_writerDal.Insert(t);
 		}

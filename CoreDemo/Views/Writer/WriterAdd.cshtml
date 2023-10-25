@@ -1,0 +1,45 @@
+﻿@model CoreDemo.Models.AddProfileImage
+
+@{
+    ViewData["Title"] = "WriterAdd";
+    Layout = "~/Views/Shared/_WriterLayout.cshtml";
+}
+
+
+<form class="forms-sample" method="post" enctype="multipart/form-data">
+    <div class="col-12 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Yazar Profil Bilgileri Düzenleme</h4>
+                <br />
+                <input type="hidden" asp-for="WriterID" />
+                <div class="form-group">
+                    <label for="exampleInputName1">Yazar Ad Soyad</label>
+                    <input type="text" asp-for="WriterName" class="form-control" />
+                    <span asp-validation-for="WriterName" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputEmail3">Mail Adresi</label>
+                    <input type="email" asp-for="WriterMail" class="form-control" />
+                    <span asp-validation-for="WriterMail" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputPassword4">Şifre</label>
+                    <input type="password" asp-for="WriterPassword" class="form-control" />
+                    <span asp-validation-for="WriterPassword" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label>Yazar Görseli</label>
+                    <input type="file" asp-for="WriterImage" />
+                </div>
+                <div class="form-group">
+                    <label for="exampleTextarea1">Yazar Hakkında</label>
+                    <textarea asp-for="WriterAbout" rows="10" cols="3" class="form-control"></textarea>
+                    <span asp-validation-for="WriterAbout" class="text-danger"></span>
+                </div>
+                <button type="submit" class="btn btn-gradient-primary mr-2">Güncelle</button>
+            </div>
+        </div>
+    </div>
+</form>
+
