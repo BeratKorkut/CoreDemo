@@ -18,15 +18,16 @@ namespace BusinessLayer.Concrete
             _messageDal = messageDal;
         }
 
+        public List<Message> GetInboxListByWriter(string p)
+        {
+            return _messageDal.GetListAll(x => x.MessageReceiver == p);
+        }
+
         public List<Message> GetList()
         {
             return _messageDal.GetListAll();
         }
 
-        public List<Message> GetInboxListByWriter(string p)
-        {
-            return _messageDal.GetListAll(x => x.MessageReceiver == p);
-        }
 
         public void TAdd(Message t)
         {
@@ -46,20 +47,6 @@ namespace BusinessLayer.Concrete
         public void TUpdate(Message t)
         {
             _messageDal.Update(t);
-        }
-
-        public string CalculateTimeDifference(DateTime messageDate)
-        {
-            TimeSpan timeDifference = DateTime.Now - messageDate;
-
-            // Farkın saat ve dakika olarak hesaplanması
-            int hours = (int)timeDifference.TotalHours;
-            int minutes = timeDifference.Minutes;
-
-            // Farkı ifade eden metin oluşturulması
-            string result = $"{hours} saat {minutes} dakika";
-
-            return result;
         }
     }
 }

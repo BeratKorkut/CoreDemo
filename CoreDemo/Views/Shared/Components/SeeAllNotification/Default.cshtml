@@ -4,27 +4,55 @@
 
 @{
     int count = 0;
+    DateTime girdi = DateTime.Now;
 }
 
 <table class="table table-striped">
     <thead class="table-dark">
         <tr>
-            <th> # </th>
-            <th> Bildirim </th>
-            <th> Bildirim Mesaj </th>
-            <th> Bildirim Tarih </th>
+            <th class="col-1">#</th>
+            <th class="col-8">Bildirim Mesajı</th>
+            <th class="col-3">Süre</th>
         </tr>
     </thead>
-    <tbody >
-        @foreach (var item in Model.OrderByDescending(x=>x.NotificationID))
+    <tbody>
+        @foreach (var item in Model.OrderByDescending(x => x.NotificationID))
         {
             count++;
+            TimeSpan zaman = girdi - item.NotificationDate;
+            string cikti = "";
+
+            if (zaman.Days == 0)
+            {
+                if (zaman.Minutes < 1)
+                {
+                    cikti = "Şimdi gönderildi";
+                }
+                else if (zaman.Hours < 1)
+                {
+                    cikti = $"{zaman.Minutes} dakika önce gönderildi";                    
+                }
+                else
+                {
+                    cikti = $"{zaman.Hours} saat {zaman.Minutes} dakika önce gönderildi";
+                }
+            }
+            else if (zaman.Days <= 10)
+            {
+                cikti = zaman.Days == 1 ? "Dün gönderildi" : $"{zaman.Days} gün önce gönderildi";
+            }
+            else
+            {
+                cikti = $"{item.NotificationDate:dd.MM.yyyy} tarihinde gönderildi";
+
+            }
+
             <tr>
-                <th> @count </th>
-                <td> @item.NotificationType </td>
-                <td> @item.NotificationDetails </td>
-                <td> @(((DateTime)item.NotificationDate).ToString("dd-MMM-yyyy")) </td>
+                <th scope="row">@count</th>
+                <td>@item.NotificationDetails</td>
+                <td>@cikti</td>
             </tr>
         }
     </tbody>
 </table>
+

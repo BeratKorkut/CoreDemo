@@ -1,22 +1,50 @@
 ﻿@using EntityLayer.Concrete
 @model List<Message>
-
+@{
+    DateTime girdi = DateTime.Now;
+}
 <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list" aria-labelledby="messageDropdown">
     <h6 class="p-3 mb-0">Mesajlar</h6>
     <div class="dropdown-divider"></div>
-    @foreach (var item in Model)
+    @foreach (var item in Model.OrderByDescending(x => x.MessageID).TakeLast(3))
     {
-        <a class="dropdown-item preview-item">
+        TimeSpan zaman = girdi - item.MessageDate;
+        string cikti = "";
+        if (zaman.Days == 0)
+        {
+            if (zaman.Minutes < 1)
+            {
+                cikti = "Şimdi gönderildi";
+            }
+            else if (zaman.Hours < 1)
+            {
+                cikti = $"{zaman.Minutes} dakika önce gönderildi";
+            }
+            else
+            {
+                cikti = $"{zaman.Hours} saat {zaman.Minutes} dakika önce gönderildi";
+            }
+        }
+        else if (zaman.Days <= 10)
+        {
+            cikti = zaman.Days == 1 ? "Dün gönderildi" : $"{zaman.Days} gün önce gönderildi";
+        }
+        else
+        {
+            cikti = $"{item.MessageDate:dd.MM.yyyy} tarihinde gönderildi";
+
+        }
+        <a class="dropdown-item preview-item" href="/Writer/Messages/">
             <div class="preview-thumbnail">
                 <img src="~/writer/assets/images/faces/face4.jpg" alt="image" class="profile-pic">
             </div>
             <div class="preview-item-content d-flex align-items-start flex-column justify-content-center">
                 <h6 class="preview-subject ellipsis mb-1 font-weight-normal"> @item.MessageSender sana mesaj gönderdi.</h6>
-                <p class="text-gray mb-0">@(item.MessageDate)</p>
+                <p class="text-gray mb-0">@cikti</p>
 
             </div>
         </a>
     }
     <div class="dropdown-divider"></div>
-    <h6 class="p-3 mb-0 text-center">3 Yeni Mesaj</h6>
+    <h6 class="p-3 mb-0 text-center">@ViewBag.messages Yeni Mesaj</h6>
 </div>

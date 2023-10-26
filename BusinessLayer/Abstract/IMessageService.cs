@@ -10,6 +10,5 @@ namespace BusinessLayer.Abstract
     public interface IMessageService : IGenericService<Message>
     {
         List<Message> GetInboxListByWriter(string p);
-        string CalculateTimeDifference(DateTime messageDate);
     }
 }
