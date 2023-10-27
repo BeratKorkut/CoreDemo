@@ -1,0 +1,74 @@
+﻿@using X.PagedList
+@using X.PagedList.Mvc.Core
+@model IPagedList<EntityLayer.Concrete.Category>
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+<h1>Kategori Listesi</h1>
+
+<table class="table table-bordered">
+    <tr>
+        <th>#</th>
+        <th>Kategori Adı</th>
+        <th>Pasif Yap</th>
+        <th>Aktif Yap</th>
+        <th>Düzenle</th>
+        <th>Sil</th>
+    </tr>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <th>@item.CategoryID</th>
+            <td>@item.CategoryName</td>
+            <td><a href="#" class="btn btn-warning">Pasif Yap</a></td>
+            <td><a href="#" class="btn btn-info">Aktif Yap</a></td>
+            <td><a href="/Admin/Category/AddCategory/@item.CategoryID" class="btn btn-success">Düzenle</a></td>
+            <td><a href="#" onclick="confirmDelete(@item.CategoryID)" class="btn btn-danger">Sil</a></td>
+        </tr>
+    }
+</table>
+<a href="/Admin/Category/AddCategory/" class="btn btn-primary">Yeni Kategori Ekle</a>
+<br />
+<br />
+@Html.PagedListPager((IPagedList)Model,page=>Url.Action("Index",new {page}))
+
+<script>
+    function confirmDelete(categoryId) {
+        swal({
+            title: "Silmek istediğine emin misin?",
+            text: "Silme işlemi gerçekleşirse yeni bir kategori oluşturmanız gerekecektir!",
+            icon: "warning",
+            buttons: {
+                cancel: "İptal et",
+                confirm: "Sil"
+            },
+            dangerMode: true,
+        }).then((willDelete) => {
+            if (willDelete) {
+                swal({
+                    title: "Tebrikler!",
+                    text: "Kategori başarılı bir şekilde silindi!",
+                    icon: "success",
+                    button: "Tamam",
+                }).then(() => {
+                    window.location.href = "/Admin/Category/DeleteCategory/" + categoryId;
+                });
+                // Eğer kullanıcı "OK" derse, silme işlemini gerçekleştir
+            } else {
+                // Eğer kullanıcı "Cancel" derse, işlemi iptal et
+                swal({
+                    title: "İptal!",
+                    text: "Kategori silme işlemi iptal edildi!",
+                    icon: "info",
+                    buttons: {
+                        confirm: "Tamam"
+                    }
+                });
+            }
+        });
+    }
+</script>

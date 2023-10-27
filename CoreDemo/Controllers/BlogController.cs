@@ -1,6 +1,7 @@
 ﻿using BusinessLayer.Abstract;
 using BusinessLayer.Concrete;
 using BusinessLayer.ValidationRules;
+using DataAccessLayer.Concrete;
 using DataAccessLayer.EntityFramework;
 using EntityLayer.Concrete;
 using FluentValidation.Results;
@@ -19,6 +20,7 @@ namespace CoreDemo.Controllers
             _blogService = blogService;
             _categoryService = categoryService;
         }
+        Context c = new Context();
 
         public IActionResult Index()
         {
@@ -34,7 +36,9 @@ namespace CoreDemo.Controllers
         }
         public IActionResult BlogListByWriter()
         {
-            var values = _blogService.GetListWithCategoryByWriterBm(1);
+            var userMail = User.Identity.Name;
+            var writerID = c.Writers.Where(x => x.WriterMail == userMail).Select(y => y.WriterID).FirstOrDefault();
+            var values = _blogService.GetListWithCategoryByWriterBm(writerID);
             return View(values);
         }
         [HttpGet]
@@ -52,13 +56,16 @@ namespace CoreDemo.Controllers
         [HttpPost]
         public IActionResult BlogAdd(Blog p)
         {
+            var userMail = User.Identity.Name;
+            var writerID = c.Writers.Where(x => x.WriterMail == userMail).Select(y => y.WriterID).FirstOrDefault();
+
             BlogValidator bv = new BlogValidator();
             ValidationResult result = bv.Validate(p);
             if (result.IsValid)
             {
                 p.BlogStatus = true;
                 p.BlogCreateDate = DateTime.Parse(DateTime.Now.ToShortDateString());
-                p.WriterID = 1;
+                p.WriterID = writerID;
                 _blogService.TAdd(p);
                 return RedirectToAction("BlogListByWriter", "Blog");
             }
@@ -93,6 +100,12 @@ namespace CoreDemo.Controllers
         [HttpPost]
         public IActionResult BlogEdit(Blog p)
         {
+            var userMail = User.Identity.Name;
+            var writerID = c.Writers.Where(x => x.WriterMail == userMail).Select(y => y.WriterID).FirstOrDefault();
+
+            p.WriterID = writerID;
+            p.BlogCreateDate = DateTime.Parse(DateTime.Now.ToString());
+            p.BlogStatus = true;
             _blogService.TUpdate(p);
             return RedirectToAction("BlogListByWriter", "Blog");
         }

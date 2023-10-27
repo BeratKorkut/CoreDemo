@@ -6,6 +6,7 @@
     Layout = "~/Views/Shared/_WriterLayout.cshtml";
     int count = 0;
 }
+
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <h1>Yazarın Blogları</h1>
 <table class="table table-bordered">
@@ -44,7 +45,8 @@
         </tr>
     }
 </table>
-<a href="/Blog/BlogAdd/" class="btn btn-primary">Yeni Blog Oluştur</a>
+<br />
+<div><a href="/Blog/BlogAdd/" class="btn btn-gradient-primary">Yeni Blog Oluştur</a></div>
 
 <script>
     function confirmDelete(blogId) {

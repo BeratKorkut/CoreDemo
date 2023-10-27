@@ -1,4 +1,5 @@
 ﻿using BusinessLayer.Abstract;
+using DataAccessLayer.Concrete;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CoreDemo.ViewComponents.Writer
@@ -12,9 +13,12 @@ namespace CoreDemo.ViewComponents.Writer
             _writerService = writerService;
         }
 
+        Context c = new Context();
         public IViewComponentResult Invoke()
         {
-            var values = _writerService.GetWriterByID(1);
+            var userMail = User.Identity.Name;
+            var writerID = c.Writers.Where(x => x.WriterMail == userMail).Select(y => y.WriterID).FirstOrDefault();
+            var values = _writerService.GetWriterByID(writerID);
             return View(values);
         }
     }

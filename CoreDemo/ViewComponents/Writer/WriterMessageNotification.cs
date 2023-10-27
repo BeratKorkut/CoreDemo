@@ -6,20 +6,20 @@ namespace CoreDemo.ViewComponents.Writer
 {
     public class WriterMessageNotification : ViewComponent
     {
-        private readonly IMessageService _messageService;
+        private readonly IMessage2Service _message2Service;
 
-        public WriterMessageNotification(IMessageService messageService)
+        public WriterMessageNotification(IMessage2Service message2Service)
         {
-            _messageService = messageService;
+            _message2Service = message2Service;
         }
 
         public IViewComponentResult Invoke()
         {
+            int id = 2;
             Context c = new Context();
-            ViewBag.messages = c.Messages.Count();
-            string p;
-            p = "deneme@gmail.com";
-            var values = _messageService.GetInboxListByWriter(p);
+            ViewBag.messages = c.Message2s.Where(x => x.MessageReceiverID == id).Count();
+
+            var values = _message2Service.GetInboxListByWriter(id);
             return View(values);
         }
     }

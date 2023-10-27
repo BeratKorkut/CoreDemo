@@ -42,6 +42,9 @@ namespace BusinessLayer.Container
             services.AddScoped<IMessageService, MessageManager>();
             services.AddScoped<IMessageDal, EfMessageRepository>();
 
+            services.AddScoped<IMessage2Service, Message2Manager>();
+            services.AddScoped<IMessage2Dal, EfMessage2Repository>();
+
 
         }
     }
